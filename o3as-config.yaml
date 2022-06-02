@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: o3as-config
+data:
+  O3API_SITE: api.o3as.fedcloud.eu
+  O3WEB_SITE: web.o3as.fedcloud.eu
+  O3AS_DATA_BASEPATH: /mnt/o3as-data/Skimmed
+  O3AS_LEGALINFO_URL: https://o3as.data.kit.edu/policies/terms-of-use.html
+  O3AS_ACKNOWLEDGMENT_URL: https://o3as.data.kit.edu/policies/how-to-acknowledge.html
