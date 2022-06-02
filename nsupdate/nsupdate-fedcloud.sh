@@ -24,7 +24,7 @@ check_hostname()
   else
      message=$(curl https://${site}:${secret}@nsupdate.fedcloud.eu/nic/update)
   fi
-  echo "${site}: ${message}"
+  echo "${site}: CODE ${response} : ${message}"
 }
 
 # one can define O3API_SITE and O3WEB_SITE via Environment Variables

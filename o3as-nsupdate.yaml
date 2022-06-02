@@ -4,14 +4,14 @@ metadata:
   name: o3as-nsupdate
   namespace: o3as
 spec:
-  schedule: "0 1 * * * *"
+  schedule: "5 1 * * *"
   jobTemplate:
     spec:
       template:
         spec:
           containers:
             - name: nsupdate
-              image: o3as/nsupdate:v1.0
+              image: o3as/nsupdate:v1.0.1
               imagePullPolicy: Always
               envFrom:
                 - configMapRef:
@@ -21,3 +21,7 @@ spec:
           restartPolicy: Never
           nodeSelector:
              kubernetes.io/hostname: kubeserver.localdomain
+          tolerations:
+          - key: "node-role.kubernetes.io/master"
+            operator: "Exists"
+            effect: "NoSchedule"
