@@ -2,6 +2,7 @@ apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: o3as-nsupdate
+  namespace: o3as
 spec:
   schedule: "0 1 * * * *"
   jobTemplate:
@@ -14,9 +15,9 @@ spec:
               imagePullPolicy: Always
               envFrom:
                 - configMapRef:
-                  name: o3as-config
+                    name: o3as-config
                 - secretRef:
-                  name: o3as-secrets
+                    name: o3as-secrets
           restartPolicy: Never
           nodeSelector:
              kubernetes.io/hostname: kubeserver.localdomain
