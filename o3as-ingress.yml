@@ -2,6 +2,7 @@ apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
   name: o3as-ingress
+  namespace: o3as
   annotations:
     kubernetes.io/ingress.class: 'nginx'
     cert-manager.io/cluster-issuer: 'letsencrypt-site'
@@ -16,11 +17,12 @@ metadata:
 spec:
   tls:
   - hosts:
-    - test.o3as.fedcloud.eu
+    - api.o3as.fedcloud.eu
+    - web.o3as.fedcloud.eu
     secretName: site-tls
 
   rules:
-  - host: test.o3as.fedcloud.eu
+  - host: web.o3as.fedcloud.eu
     http:
       paths:
       - path: /api
@@ -33,3 +35,16 @@ spec:
         backend:
           serviceName: o3web-service
           servicePort: 3000
+  - host: api.o3as.fedcloud.eu
+    http:
+      paths:
+      - path: /api
+        pathType: Prefix
+        backend:
+          serviceName: o3api-service
+          servicePort: 5005
+      - path: /
+        pathType: Exact
+        backend:
+          serviceName: o3api-service
+          servicePort: 5005

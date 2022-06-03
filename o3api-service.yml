@@ -3,6 +3,7 @@ kind: Service
 apiVersion: v1
 metadata:
   name: o3api-service
+  namespace: o3as
 spec:
   selector:
     name: o3api-pod

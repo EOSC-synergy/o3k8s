@@ -9,3 +9,5 @@ data:
   O3AS_DATA_BASEPATH: /mnt/o3as-data/Skimmed
   O3AS_LEGALINFO_URL: https://o3as.data.kit.edu/policies/terms-of-use.html
   O3AS_ACKNOWLEDGMENT_URL: https://o3as.data.kit.edu/policies/how-to-acknowledge.html
+  RSTORAGE_URL: https://data.remote_storage.org
+  RSTORAGE_USER: remote_user

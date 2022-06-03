@@ -45,8 +45,8 @@ spec:
         - containerPort: 5005
           name: port0
         envFrom:
-          - configMapRef:
-              name: o3as-config
+        - configMapRef:
+            name: o3as-config
         env:
         - name: O3API_TIMEOUT
           value: "600"
