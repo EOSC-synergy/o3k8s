@@ -15,13 +15,17 @@ spec:
             - name: rclone
               image: rclone/rclone:1.58
               args: 
-              - "--webdav-user $(RSTORAGE_USER)"
-              - "--webdav-pass $(RSTORAGE_PASS)"
+              - "--webdav-user"
+              - $(RSTORAGE_USER)
+              - "--webdav-pass"
+              - $(RSTORAGE_PASS)
               - "sync"
-              - "--webdav-url $(RSTORAGE_URL)"
-              - "--webdav-headers X-Requested-With,XMLHttpRequest"
+              - "--webdav-url"
+              - $(RSTORAGE_URL)
+              - "--webdav-headers"
+              - "X-Requested-With,XMLHttpRequest"
               - ":webdav:"
-              - "$(O3AS_DATA_BASEPATH)"
+              - "$(O3AS_DATA_PATH_HOST)"
               imagePullPolicy: Always
               envFrom:
                 - configMapRef:

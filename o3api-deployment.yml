@@ -48,6 +48,8 @@ spec:
         - configMapRef:
             name: o3as-config
         env:
+        - name: O3AS_DATA_BASEPATH
+          value: /mnt/o3as-data/Skimmed
         - name: O3API_TIMEOUT
           value: "600"
         - name: O3API_WORKERS
