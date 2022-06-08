@@ -20,6 +20,9 @@ spec:
       labels:
         name: o3web-pod
     spec:
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
       affinity:
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:

@@ -11,7 +11,7 @@ spec:
         spec:
           containers:
             - name: nsupdate
-              image: o3as/nsupdate:v1.0.1
+              image: o3as/nsupdate:1.0
               imagePullPolicy: Always
               envFrom:
                 - configMapRef:

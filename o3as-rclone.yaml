@@ -11,10 +11,11 @@ spec:
         spec:
           securityContext:
             runAsUser: 1000
+            runAsGroup: 1000
           containers:
             - name: rclone
               image: rclone/rclone:1.58
-              args: 
+              args:
               - "--webdav-user"
               - $(RSTORAGE_USER)
               - "--webdav-pass"
@@ -25,11 +26,19 @@ spec:
               - "--webdav-headers"
               - "X-Requested-With,XMLHttpRequest"
               - ":webdav:"
-              - "$(O3AS_DATA_PATH_HOST)"
+              - /data
               imagePullPolicy: Always
               envFrom:
                 - configMapRef:
                     name: o3as-config
                 - secretRef:
                     name: o3as-secrets
+              volumeMounts:
+              - mountPath: /data
+                name: nfs-o3as-data
+          volumes:
+          - name: nfs-o3as-data
+            nfs:
+              path: /pv/o3as-data
+              server: kubeserver
           restartPolicy: Never

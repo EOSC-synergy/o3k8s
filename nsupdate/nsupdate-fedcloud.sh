@@ -1,7 +1,7 @@
 #!/bin/sh
 ###
 # Shell script to update Domain Name O3API / O3WEBAPP  with the right IP
-# One HAS TO provide O3API_SECRET and O3WEB_SECRET as ENV variables!
+# One HAS TO provide O3API_SITE_SECRET and O3WEB_SITE_SECRET as ENV variables!
 # Optionally one can also redefine O3API_SITE and O3WEB_SITE
 ###
 
@@ -36,17 +36,17 @@ if [ ${#O3WEB_SITE} -le 1 ]; then
   O3WEB_SITE=${o3web_site}
 fi
 
-# one has to define correct O3API_SECRET and O3WEB_SECRET via Environment Variables
+# one has to define correct O3API_SITE_SECRET and O3WEB_SITE_SECRET via ENV Variables
 # if not defined => use dummy ones for proper function calling, BUT
-# nsupdate will NOT provide proper hostnames (you need right secret)!
+# nsupdate will NOT provide proper hostnames (you need right secrets)!
 if [ ${#O3API_SECRET} -le 1 ]; then
-  O3API_SECRET="dummysecret"
+  O3API_SITE_SECRET="dummysecret"
 fi
 if [ ${#O3WEB_SECRET} -le 1 ]; then
-  O3WEB_SECRET="dummysecret"
+  O3WEB_SITE_SECRET="dummysecret"
 fi
 
 echo $(date +"%F %T %Z")
 
-check_hostname $O3API_SITE $O3API_SECRET
-check_hostname $O3WEB_SITE $O3WEB_SECRET
+check_hostname $O3API_SITE $O3API_SITE_SECRET
+check_hostname $O3WEB_SITE $O3WEB_SITE_SECRET
