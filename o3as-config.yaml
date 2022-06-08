@@ -6,8 +6,6 @@ metadata:
 data:
   O3API_SITE: api.o3as.fedcloud.eu
   O3WEB_SITE: web.o3as.fedcloud.eu
-  O3API_IMAGE: o3as/o3api:0.8.2
-  O3WEB_IMAGE: o3as/o3webapp:1.0.1
   O3AS_DATA_PATH_HOST: /pv/o3as-data
   O3AS_LEGALINFO_URL: https://o3as.data.kit.edu/policies/terms-of-use.html
   O3AS_ACKNOWLEDGMENT_URL: https://o3as.data.kit.edu/policies/how-to-acknowledge.html

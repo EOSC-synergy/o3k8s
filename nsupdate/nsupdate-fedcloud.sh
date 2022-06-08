@@ -39,10 +39,10 @@ fi
 # one has to define correct O3API_SITE_SECRET and O3WEB_SITE_SECRET via ENV Variables
 # if not defined => use dummy ones for proper function calling, BUT
 # nsupdate will NOT provide proper hostnames (you need right secrets)!
-if [ ${#O3API_SECRET} -le 1 ]; then
+if [ ${#O3API_SITE_SECRET} -le 1 ]; then
   O3API_SITE_SECRET="dummysecret"
 fi
-if [ ${#O3WEB_SECRET} -le 1 ]; then
+if [ ${#O3WEB_SITE_SECRET} -le 1 ]; then
   O3WEB_SITE_SECRET="dummysecret"
 fi
 
