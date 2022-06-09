@@ -1,27 +1,24 @@
 apiVersion: batch/v1
-kind: CronJob
+kind: Job
 metadata:
   name: o3as-nsupdate
   namespace: o3as
 spec:
-  schedule: "5 1 * * *"
-  jobTemplate:
+  template:
     spec:
-      template:
-        spec:
-          containers:
-            - name: nsupdate
-              image: o3as/nsupdate:1.0
-              imagePullPolicy: Always
-              envFrom:
-                - configMapRef:
-                    name: o3as-config
-                - secretRef:
-                    name: o3as-secrets
-          restartPolicy: Never
-          nodeSelector:
-             kubernetes.io/hostname: kubeserver.localdomain
-          tolerations:
-          - key: "node-role.kubernetes.io/master"
-            operator: "Exists"
-            effect: "NoSchedule"
+      containers:
+        - name: nsupdate
+          image: o3as/nsupdate:1.0
+          imagePullPolicy: Always
+          envFrom:
+            - configMapRef:
+                name: o3as-config
+            - secretRef:
+                name: o3as-secrets
+      restartPolicy: Never
+      nodeSelector:
+        kubernetes.io/hostname: kubeserver.localdomain
+      tolerations:
+      - key: "node-role.kubernetes.io/master"
+        operator: "Exists"
+        effect: "NoSchedule"

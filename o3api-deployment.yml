@@ -37,6 +37,18 @@ spec:
       - name: o3api-app
         image: o3as/o3api:0.8.2
         imagePullPolicy: Always
+        readinessProbe:
+          httpGet:
+            path: /api/v1/models
+            port: 5005
+          periodSeconds: 20
+          failureThreshold: 5
+        livenessProbe:
+          httpGet:
+            path: /api/v1/models
+            port: 5005
+          periodSeconds: 10
+          failureThreshold: 3
         resources:
           requests:
             memory: "900Mi"
