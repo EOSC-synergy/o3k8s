@@ -1,7 +1,8 @@
 #!/bin/sh
 ###
 # Shell script to download published data and dearchive
-# One can provide publicly available list of files to download via O3AS_PUBLISHED_DATA_LIST
+# One can provide publicly available list of files to download via O3AS_PUBLISHED_LIST_REMOTE
+# Another redefinable variable: O3AS_DATA_PATH : where to store data in the container
 ###
 
 ### some defaults
@@ -55,13 +56,19 @@ if [ ${#O3AS_PUBLISHED_LIST_REMOTE} -le 1 ]; then
   O3AS_PUBLISHED_LIST_REMOTE=${o3as_published_list_remote}
 fi
 
-# check if local data directory exists, if not => create
-if [ ! -d "${o3as_data_path}" ]; then
-  mkdir -p "${o3as_data_path}"
+# similar, one can redefine O3AS_DATA_PATH
+# if not defined => use default value provided above
+if [ ${#O3AS_DATA_PATH} -le 1 ]; then
+  O3AS_DATA_PATH=${o3as_data_path}
 fi
 
-# change to o3as_data_path directory
-cd ${o3as_data_path}
+# check if local data directory exists, if not => create
+if [ ! -d "${O3AS_DATA_PATH}" ]; then
+  mkdir -p "${O3AS_DATA_PATH}"
+fi
+
+# change to $O3AS_DATA_PATH directory
+cd ${O3AS_DATA_PATH}
 
 # Download $O3AS_PUBLISHED_LIST_REMOTE and store in $o3as_published_list
 wget -O ${o3as_published_list} ${O3AS_PUBLISHED_LIST_REMOTE}
@@ -70,6 +77,5 @@ wget -O ${o3as_published_list} ${O3AS_PUBLISHED_LIST_REMOTE}
 # allow comments started with '#'
 grep -v '^#' ${o3as_published_list} | while read -r wl
 do
-  echo "[TEST] ${wl}"
   get_data "${wl}" || continue
 done

@@ -64,7 +64,7 @@ spec:
             name: o3as-config
         env:
         - name: O3AS_DATA_BASEPATH
-          value: /mnt/o3as-data/Skimmed
+          value: /data/Skimmed
         - name: O3API_TIMEOUT
           value: "600"
         - name: O3API_WORKERS
@@ -72,7 +72,7 @@ spec:
 #        - name: HDF5_USE_FILE_LOCKING
 #          value: 'FALSE'        
         volumeMounts:
-        - mountPath: /mnt/o3as-data
+        - mountPath: /data
           name: nfs-o3as-data
       volumes:
       - name: nfs-o3as-data

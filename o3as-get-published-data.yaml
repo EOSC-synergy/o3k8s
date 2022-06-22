@@ -1,0 +1,29 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: o3as-get-published-data
+  namespace: o3as
+spec:
+  template:
+    spec:
+      containers:
+        - name: get-published-data
+          image: alpine:3.14
+          imagePullPolicy: Always
+          envFrom:
+            - configMapRef:
+                name: o3as-config
+          env:
+          - name: O3AS_DATA_PATH
+            value: /data/Skimmed
+          command: ["/bin/sh"]
+          args: ["-c", "wget -O - https://git.scc.kit.edu/synergy.o3as/o3k8s/-/raw/main/scripts/get-published-data.sh | sh"]
+          volumeMounts:
+            - mountPath: /data
+              name: nfs-o3as-data
+      volumes:
+      - name: nfs-o3as-data
+        nfs:
+          path: /pv/o3as-data
+          server: kubeserver
+      restartPolicy: Never
