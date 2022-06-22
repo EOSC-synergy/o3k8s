@@ -17,12 +17,12 @@ metadata:
 spec:
   tls:
   - hosts:
-    - api.o3as.fedcloud.eu
-    - web.o3as.fedcloud.eu
+    - {{.Values.ingress.hostApi}}
+    - {{.Values.ingress.hostWeb}}
     secretName: site-tls
 
   rules:
-  - host: web.o3as.fedcloud.eu
+  - host: {{.Values.ingress.hostWeb}}
     http:
       paths:
       - path: /api
@@ -35,7 +35,7 @@ spec:
         backend:
           serviceName: o3web-service
           servicePort: 3000
-  - host: api.o3as.fedcloud.eu
+  - host: {{.Values.ingress.hostApi}}
     http:
       paths:
       - path: /api

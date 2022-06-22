@@ -1,0 +1,10 @@
+ingress:
+  hostApi: o3api.test.fedcloud.eu
+  hostWeb: o3web.test.fedcloud.eu
+
+deployment:
+  image:
+    repositoryApi: o3as/o3api
+    tagApi: 0.8.2
+    repositoryWeb: o3as/o3webapp
+    tagWeb: 1.0
