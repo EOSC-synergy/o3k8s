@@ -8,7 +8,7 @@ spec:
     spec:
       containers:
         - name: nsupdate
-          image: o3as/nsupdate:1.0
+          image: {{.Values.deployment.image.repositoryNsupdate}}:{{.Values.deployment.image.tagNsupdate}}
           imagePullPolicy: Always
           envFrom:
             - configMapRef:

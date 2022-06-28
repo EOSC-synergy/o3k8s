@@ -35,7 +35,7 @@ spec:
       priorityClassName: production-medium
       containers:
       - name: o3web-app
-        image: o3as/o3webapp:1.0
+        image: {{.Values.deployment.image.repositoryWeb}}:{{.Values.deployment.image.tagWeb}}
         imagePullPolicy: Always
         resources:
           requests:

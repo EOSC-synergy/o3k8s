@@ -8,3 +8,5 @@ deployment:
     tagApi: 0.8.2
     repositoryWeb: o3as/o3webapp
     tagWeb: 1.0
+    repositoryNsupdate: o3as/nsupdate
+    tagNsupdate: 1.0

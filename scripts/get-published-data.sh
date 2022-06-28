@@ -5,7 +5,9 @@
 # Another redefinable variable: O3AS_DATA_PATH : where to store data in the container
 ###
 
-### some defaults
+### some defaults ###
+# default "Data sources - Sources.csv" file with Data Sources etc
+o3as_data_sources_csv=https://git.scc.kit.edu/synergy.o3as/o3sources/-/raw/datarepo/Data%20sources%20-%20Sources.csv
 # default (remote) address of the o3as_publised_list
 o3as_published_list_remote=https://git.scc.kit.edu/synergy.o3as/o3sources/-/raw/datarepo/o3as_published_data.txt
 # local path
@@ -50,6 +52,11 @@ get_data()
   fi
 }
 
+# one can define O3AS_DATA_SOURCES_CSV via Environment Variable
+# if not defined => use default value provided above
+if [ ${#O3AS_DATA_SOURCES_CSV} -le 1 ]; then
+  O3AS_DATA_SOURCES_CSV=${o3as_data_sources_csv}
+fi
 # one can define O3AS_PUBLISHED_LIST_REMOTE via Environment Variable
 # if not defined => use default value provided above
 if [ ${#O3AS_PUBLISHED_LIST_REMOTE} -le 1 ]; then
@@ -69,6 +76,9 @@ fi
 
 # change to $O3AS_DATA_PATH directory
 cd ${O3AS_DATA_PATH}
+
+# Download $O3AS_DATA_SOURCES_CSV file from remote
+wget ${O3AS_DATA_SOURCES_CSV}
 
 # Download $O3AS_PUBLISHED_LIST_REMOTE and store in $o3as_published_list
 wget -O ${o3as_published_list} ${O3AS_PUBLISHED_LIST_REMOTE}
