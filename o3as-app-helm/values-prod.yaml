@@ -1,9 +1,16 @@
 namespace: o3as
 
+# for kubernetes 1.19.x one needs batch/v1beta1, for later vers batch/v1
 cronApiVersion: batch/v1
 
+issuers:
+  letsencrypt: letsencrypt-prod
+
+# info needed to obtain letsencrypt certificate
+# (!!) Careful with the rate limits of letsencrypt (!!)
 letsencrypt:
   acme:
+    server: https://acme-v02.api.letsencrypt.org/directory
     email: some.email@real.world
 
 sites:
@@ -31,7 +38,7 @@ security:
 
 images:
   repositoryApi: o3as/o3api
-  tagApi: 0.8.2
+  tagApi: 0.8.4
   repositoryWeb: o3as/o3webapp
   tagWeb: 1.0
   repositoryNsupdate: o3as/nsupdate

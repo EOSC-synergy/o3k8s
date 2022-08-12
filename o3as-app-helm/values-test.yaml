@@ -1,10 +1,17 @@
 namespace: o3as
 
+# for kubernetes 1.19.x one needs batch/v1beta1, for later vers batch/v1
 cronApiVersion: batch/v1beta1
 
+issuers:
+  letsencrypt: letsencrypt-site
+
+# info needed to obtain letsencrypt certificate
+# in test deployment we use "acme-staging" to avoid rate limits of letsencrypt
 letsencrypt:
   acme:
-    email: some.email@real.world
+    server: https://acme-staging-v02.api.letsencrypt.org/directory
+    email: some.real@email.world
 
 sites:
   hostApi: o3api.test.fedcloud.eu
@@ -17,7 +24,7 @@ env:
   hdf5UseFileLocking: "FALSE"
 
 commands:
-  getPublishedData: "https://git.scc.kit.edu/synergy.o3as/o3k8s/-/raw/helm/scripts/get-published-data.sh"
+  getPublishedData: "https://git.scc.kit.edu/synergy.o3as/o3k8s/-/raw/helm-test/scripts/get-published-data.sh"
   
 pv:
   nfs:

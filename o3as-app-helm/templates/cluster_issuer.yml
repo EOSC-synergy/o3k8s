@@ -1,15 +1,13 @@
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
 metadata:
-  name: letsencrypt-site
-#  namespace: cert-manager
+  name: {{.Values.issuers.letsencrypt}}
 spec:
   acme:
-#    server: https://acme-staging-v02.api.letsencrypt.org/directory
-    server: https://acme-v02.api.letsencrypt.org/directory
+    server: {{.Values.letsencrypt.acme.server}}
     email: {{.Values.letsencrypt.acme.email}}
     privateKeySecretRef:
-      name: letsencrypt-site
+      name: {{.Values.issuers.letsencrypt}}
     solvers:
     - http01:
         ingress:
