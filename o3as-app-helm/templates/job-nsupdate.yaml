@@ -2,7 +2,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: o3as-job-nsupdate
-  namespace: o3as
+  namespace: {{.Values.namespace}}
 spec:
   template:
     spec:

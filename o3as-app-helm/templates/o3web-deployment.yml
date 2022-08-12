@@ -3,7 +3,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: o3web-deployment
-  namespace: o3as
+  namespace: {{.Values.namespace}}
 spec:
   replicas: 1
   strategy:

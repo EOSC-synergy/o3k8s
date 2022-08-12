@@ -1,3 +1,5 @@
+namespace: o3as
+
 letsencrypt:
   acme:
     email: some.email@real.world
@@ -7,7 +9,8 @@ sites:
   hostWeb: web.o3as.fedcloud.eu
   
 env:
-  o3as_data_path: /data/Skimmed
+  o3asDataPath: /data/Skimmed
+  hdf5UseFileLocking: 'TRUE'
   
 pv:
   nfs:

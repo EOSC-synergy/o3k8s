@@ -2,7 +2,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: o3as-job-get-published-data
-  namespace: o3as
+  namespace: {{.Values.namespace}}
 spec:
   template:
     spec:
@@ -18,7 +18,7 @@ spec:
                 name: o3as-config
           env:
           - name: O3AS_DATA_PATH
-            value: /data/Skimmed
+            value: {{.Values.env.o3asDataPath}}
           command: ["/bin/sh"]
           args: ["-c", "wget -O - https://git.scc.kit.edu/synergy.o3as/o3k8s/-/raw/main/scripts/get-published-data.sh | sh"]
           volumeMounts:

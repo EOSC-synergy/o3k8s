@@ -3,7 +3,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: o3api-deployment
-  namespace: o3as
+  namespace: {{.Values.namespace}}
 spec:
   replicas: 2
   strategy:
@@ -64,13 +64,13 @@ spec:
             name: o3as-config
         env:
         - name: O3AS_DATA_BASEPATH
-          value: /data/Skimmed
+          value: {{.Values.env.o3asDataPath}}
         - name: O3API_TIMEOUT
           value: "600"
         - name: O3API_WORKERS
           value: "1"
-#        - name: HDF5_USE_FILE_LOCKING
-#          value: 'FALSE'        
+        - name: HDF5_USE_FILE_LOCKING
+          value: {{.Values.env.hdf5UseFileLocking}}
         volumeMounts:
         - mountPath: /data
           name: {{.Values.pv.nfs.name}}

@@ -2,7 +2,7 @@ apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: o3as-cron-nsupdate
-  namespace: o3as
+  namespace: {{.Values.namespace}}
 spec:
   schedule: "5 1 * * *"
   jobTemplate:
