@@ -70,7 +70,7 @@ spec:
         - name: O3API_WORKERS
           value: "1"
         - name: HDF5_USE_FILE_LOCKING
-          value: {{.Values.env.hdf5UseFileLocking}}
+          value: '{{.Values.env.hdf5UseFileLocking}}'
         volumeMounts:
         - mountPath: /data
           name: {{.Values.pv.nfs.name}}

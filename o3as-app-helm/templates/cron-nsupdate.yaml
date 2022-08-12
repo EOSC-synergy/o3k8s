@@ -1,4 +1,4 @@
-apiVersion: batch/v1
+apiVersion: {{.Values.cronApiVersion}}
 kind: CronJob
 metadata:
   name: o3as-cron-nsupdate

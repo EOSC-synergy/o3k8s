@@ -1,5 +1,7 @@
 namespace: o3as
 
+cronApiVersion: batch/v1
+
 letsencrypt:
   acme:
     email: some.email@real.world
@@ -10,7 +12,12 @@ sites:
   
 env:
   o3asDataPath: /data/Skimmed
-  hdf5UseFileLocking: 'TRUE'
+  o3asDataSourcesCsv: "https://git.scc.kit.edu/synergy.o3as/o3sources/-/raw/main/Data sources - Sources.csv"
+  o3asPublishedListRemote: "https://git.scc.kit.edu/synergy.o3as/o3sources/-/raw/main/o3as_published_data.txt"
+  hdf5UseFileLocking: "TRUE"
+
+commands:
+  getPublishedData: "https://git.scc.kit.edu/synergy.o3as/o3k8s/-/raw/helm/scripts/get-published-data.sh"
   
 pv:
   nfs:
