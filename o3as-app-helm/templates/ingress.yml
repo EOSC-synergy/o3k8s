@@ -17,12 +17,12 @@ metadata:
 spec:
   tls:
   - hosts:
-    - {{.Values.ingress.hostApi}}
-    - {{.Values.ingress.hostWeb}}
+    - {{.Values.sites.hostApi}}
+    - {{.Values.sites.hostWeb}}
     secretName: site-tls
 
   rules:
-  - host: {{.Values.ingress.hostWeb}}
+  - host: {{.Values.sites.hostWeb}}
     http:
       paths:
       - path: /api
@@ -35,7 +35,7 @@ spec:
         backend:
           serviceName: o3web-service
           servicePort: 3000
-  - host: {{.Values.ingress.hostApi}}
+  - host: {{.Values.sites.hostApi}}
     http:
       paths:
       - path: /api

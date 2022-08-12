@@ -21,8 +21,8 @@ spec:
         name: o3api-pod
     spec:
       securityContext:
-        runAsUser: 1000
-        runAsGroup: 1000
+        runAsUser: {{.Values.security.runAsUser}}
+        runAsGroup: {{.Values.security.runAsGroup}}
       affinity:
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
@@ -35,7 +35,7 @@ spec:
       priorityClassName: production-medium
       containers:
       - name: o3api-app
-        image: {{.Values.deployment.image.repositoryApi}}:{{.Values.deployment.image.tagApi}}
+        image: {{.Values.images.repositoryApi}}:{{.Values.images.tagApi}}
         imagePullPolicy: Always
         readinessProbe:
           httpGet:
@@ -73,12 +73,12 @@ spec:
 #          value: 'FALSE'        
         volumeMounts:
         - mountPath: /data
-          name: nfs-o3as-data
+          name: {{.Values.pv.nfs.name}}
       volumes:
-      - name: nfs-o3as-data
+      - name: {{.Values.pv.nfs.name}}
         nfs:
-          path: /pv/o3as-data
-          server: kubeserver
+          path: {{.Values.pv.nfs.path}}
+          server: {{.Values.pv.nfs.server}}
 
 # + Apply o3api-service.yaml for Service
 # + Apply o3api-hpa.yaml for Horizonthal Pod Autoscaling

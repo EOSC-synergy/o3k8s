@@ -7,11 +7,11 @@ spec:
   template:
     spec:
       securityContext:
-        runAsUser: 1000
-        runAsGroup: 1000
+        runAsUser: {{.Values.security.runAsUser}}
+        runAsGroup: {{.Values.security.runAsGroup}}
       containers:
         - name: get-published-data
-          image: alpine:3.14
+          image: {{.Values.images.repositoryGetPub}}:{{.Values.images.tagGetPub}}
           imagePullPolicy: Always
           envFrom:
             - configMapRef:
@@ -23,10 +23,10 @@ spec:
           args: ["-c", "wget -O - https://git.scc.kit.edu/synergy.o3as/o3k8s/-/raw/main/scripts/get-published-data.sh | sh"]
           volumeMounts:
             - mountPath: /data
-              name: nfs-o3as-data
+              name: {{.Values.pv.nfs.name}}
       volumes:
-      - name: nfs-o3as-data
+      - name: {{.Values.pv.nfs.name}}
         nfs:
-          path: /pv/o3as-data
-          server: kubeserver
+          path: {{.Values.pv.nfs.path}}
+          server: {{.Values.pv.nfs.server}}
       restartPolicy: Never

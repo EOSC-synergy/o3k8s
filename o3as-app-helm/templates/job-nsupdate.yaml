@@ -8,7 +8,7 @@ spec:
     spec:
       containers:
         - name: nsupdate
-          image: {{.Values.deployment.image.repositoryNsupdate}}:{{.Values.deployment.image.tagNsupdate}}
+          image: {{.Values.images.repositoryNsupdate}}:{{.Values.images.tagNsupdate}}
           imagePullPolicy: Always
           envFrom:
             - configMapRef:

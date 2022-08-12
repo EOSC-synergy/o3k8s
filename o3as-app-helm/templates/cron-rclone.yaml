@@ -10,11 +10,11 @@ spec:
       template:
         spec:
           securityContext:
-            runAsUser: 1000
-            runAsGroup: 1000
+            runAsUser: {{.Values.security.runAsUser}}
+            runAsGroup: {{.Values.security.runAsGroup}}
           containers:
             - name: rclone
-              image: rclone/rclone:1.58
+              image: {{.Values.images.repositoryRclone}}:{{.Values.images.tagRclone}}
               args:
               - "--webdav-user"
               - $(RSTORAGE_USER)
@@ -35,10 +35,10 @@ spec:
                     name: o3as-secrets
               volumeMounts:
               - mountPath: /data
-                name: nfs-o3as-data
+                name: {{.Values.pv.nfs.name}}
           volumes:
-          - name: nfs-o3as-data
+          - name: {{.Values.pv.nfs.name}}
             nfs:
-              path: /pv/o3as-data
-              server: kubeserver
+              path: {{.Values.pv.nfs.path}}
+              server: {{.Values.pv.nfs.server}}
           restartPolicy: Never

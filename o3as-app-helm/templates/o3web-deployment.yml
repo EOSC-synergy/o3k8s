@@ -21,8 +21,8 @@ spec:
         name: o3web-pod
     spec:
       securityContext:
-        runAsUser: 1000
-        runAsGroup: 1000
+        runAsUser: {{.Values.security.runAsUser}}
+        runAsGroup: {{.Values.security.runAsGroup}}
       affinity:
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
@@ -35,7 +35,7 @@ spec:
       priorityClassName: production-medium
       containers:
       - name: o3web-app
-        image: {{.Values.deployment.image.repositoryWeb}}:{{.Values.deployment.image.tagWeb}}
+        image: {{.Values.images.repositoryWeb}}:{{.Values.images.tagWeb}}
         imagePullPolicy: Always
         resources:
           requests:

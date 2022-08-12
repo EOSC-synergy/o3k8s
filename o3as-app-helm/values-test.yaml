@@ -1,4 +1,8 @@
-ingress:
+letsencrypt:
+  acme:
+    email: some.email@real.world
+
+sites:
   hostApi: o3api.test.fedcloud.eu
   hostWeb: o3web.test.fedcloud.eu
 

@@ -1,12 +1,32 @@
-ingress:
+letsencrypt:
+  acme:
+    email: some.email@real.world
+
+sites:
   hostApi: api.o3as.fedcloud.eu
   hostWeb: web.o3as.fedcloud.eu
+  
+env:
+  o3as_data_path: /data/Skimmed
+  
+pv:
+  nfs:
+    name: nfs-o3as-data
+    path: /pv/o3as-data
+    server: kubeserver
+    
+security:
+  runAsUser: 1000
+  runsAsGroup: 1000
 
-deployment:
-  image:
-    repositoryApi: o3as/o3api
-    tagApi: 0.8.2
-    repositoryWeb: o3as/o3webapp
-    tagWeb: 1.0
-    repositoryNsupdate: o3as/nsupdate
-    tagNsupdate: 1.0
+images:
+  repositoryApi: o3as/o3api
+  tagApi: 0.8.2
+  repositoryWeb: o3as/o3webapp
+  tagWeb: 1.0
+  repositoryNsupdate: o3as/nsupdate
+  tagNsupdate: 1.0
+  repositoryRclone: rclone/rclone
+  tagRclone: 1.58
+  repositoryGetPub: alpine
+  tagGetPub: 3.14
