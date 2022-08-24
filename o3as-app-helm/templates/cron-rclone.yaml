@@ -1,0 +1,49 @@
+# for kubernetes 1.19.x one needs batch/v1beta1, for later vers batch/v1
+{{- if .Capabilities.APIVersions.Has "batch/v1/CronJob" }}
+apiVersion: batch/v1
+{{- else if .Capabilities.APIVersions.Has "batch/v1beta1/CronJob" }}
+apiVersion: batch/v1beta1
+{{- end }}
+kind: CronJob
+metadata:
+  name: o3as-cron-rclone
+  namespace: {{ .Release.Namespace }}
+spec:
+  schedule: "5 */2 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          securityContext:
+            runAsUser: {{.Values.security.runAsUser}}
+            runAsGroup: {{.Values.security.runAsGroup}}
+          containers:
+            - name: rclone
+              image: {{.Values.images.repositoryRclone}}:{{.Values.images.tagRclone}}
+              args:
+              - "--webdav-user"
+              - $(RSTORAGE_USER)
+              - "--webdav-pass"
+              - $(RSTORAGE_PASS)
+              - "sync"
+              - "--webdav-url"
+              - $(RSTORAGE_URL)
+              - "--webdav-headers"
+              - "X-Requested-With,XMLHttpRequest"
+              - ":webdav:"
+              - /data
+              imagePullPolicy: Always
+              envFrom:
+                - configMapRef:
+                    name: o3as-config
+                - secretRef:
+                    name: o3as-secrets
+              volumeMounts:
+              - mountPath: /data
+                name: {{.Values.pv.nfs.name}}
+          volumes:
+          - name: {{.Values.pv.nfs.name}}
+            nfs:
+              path: {{.Values.pv.nfs.path}}
+              server: {{.Values.pv.nfs.server}}
+          restartPolicy: Never

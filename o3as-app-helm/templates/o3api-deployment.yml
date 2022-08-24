@@ -1,0 +1,84 @@
+# Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: o3api-deployment
+  namespace: {{ .Release.Namespace }}
+spec:
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  selector:
+    matchLabels:
+      name: o3api-pod
+  template:
+    metadata:
+      name: o3api-template
+      labels:
+        name: o3api-pod
+    spec:
+      securityContext:
+        runAsUser: {{.Values.security.runAsUser}}
+        runAsGroup: {{.Values.security.runAsGroup}}
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchLabels:
+                  name: o3api-pod
+              topologyKey: kubernetes.io/hostname
+      priorityClassName: production-medium
+      containers:
+      - name: o3api-app
+        image: {{.Values.images.repositoryApi}}:{{.Values.images.tagApi}}
+        imagePullPolicy: Always
+        readinessProbe:
+          httpGet:
+            path: /api/v1/models
+            port: 5005
+          periodSeconds: 20
+          failureThreshold: 5
+        livenessProbe:
+          httpGet:
+            path: /api/v1/models
+            port: 5005
+          periodSeconds: 20
+          failureThreshold: 3
+        resources:
+          requests:
+            memory: "900Mi"
+            cpu: "1100m"
+          limits:
+            memory: "900Mi"
+            cpu: "1100m"
+        ports:
+        - containerPort: 5005
+          name: port0
+        envFrom:
+        - configMapRef:
+            name: o3as-config
+        env:
+        - name: O3AS_DATA_BASEPATH
+          value: {{.Values.env.o3asDataPath}}
+        - name: O3API_TIMEOUT
+          value: "600"
+        - name: O3API_WORKERS
+          value: "1"
+        - name: HDF5_USE_FILE_LOCKING
+          value: '{{.Values.env.hdf5UseFileLocking}}'
+        volumeMounts:
+        - mountPath: /data
+          name: {{.Values.pv.nfs.name}}
+      volumes:
+      - name: {{.Values.pv.nfs.name}}
+        nfs:
+          path: {{.Values.pv.nfs.path}}
+          server: {{.Values.pv.nfs.server}}
+
+# + Apply o3api-service.yaml for Service
+# + Apply o3api-hpa.yaml for Horizonthal Pod Autoscaling

@@ -1,0 +1,32 @@
+# for kubernetes 1.19.x one needs batch/v1beta1, for later vers batch/v1
+{{- if .Capabilities.APIVersions.Has "batch/v1/CronJob" }}
+apiVersion: batch/v1
+{{- else if .Capabilities.APIVersions.Has "batch/v1beta1/CronJob" }}
+apiVersion: batch/v1beta1
+{{- end }}
+kind: CronJob
+metadata:
+  name: o3as-cron-nsupdate
+  namespace: {{ .Release.Namespace }}
+spec:
+  schedule: "5 1 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: nsupdate
+              image: {{.Values.images.repositoryNsupdate}}:{{.Values.images.tagNsupdate}}
+              imagePullPolicy: Always
+              envFrom:
+                - configMapRef:
+                    name: o3as-config
+                - secretRef:
+                    name: o3as-secrets
+          restartPolicy: Never
+          nodeSelector:
+            kubernetes.io/hostname: kubeserver.localdomain
+          tolerations:
+          - key: "node-role.kubernetes.io/master"
+            operator: "Exists"
+            effect: "NoSchedule"

@@ -1,0 +1,39 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: o3as-job-get-published-data
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    "helm.sh/hook": pre-install
+spec:
+  template:
+    spec:
+      securityContext:
+        runAsUser: {{.Values.security.runAsUser}}
+        runAsGroup: {{.Values.security.runAsGroup}}
+      containers:
+        - name: get-published-data
+          image: {{.Values.images.repositoryGetPub}}:{{.Values.images.tagGetPub}}
+#          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
+          envFrom:
+            - configMapRef:
+                name: o3as-config
+          env:
+          - name: O3AS_DATA_PATH
+            value: {{.Values.env.o3asDataPath}}
+          - name: O3AS_DATA_SOURCES_CSV
+            value: {{.Values.env.o3asDataSourcesCsv}}
+          - name: O3AS_PUBLISHED_LIST_REMOTE
+            value: {{.Values.env.o3asPublishedListRemote}}
+          command: ["/bin/sh"]
+          args: ["-c", "wget -O - {{.Values.commands.getPublishedData}} | sh"]
+          volumeMounts:
+            - mountPath: /data
+              name: {{.Values.pv.nfs.name}}
+      volumes:
+      - name: {{.Values.pv.nfs.name}}
+        nfs:
+          path: {{.Values.pv.nfs.path}}
+          server: {{.Values.pv.nfs.server}}
+      restartPolicy: Never

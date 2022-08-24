@@ -1,0 +1,49 @@
+# while creating the app, specify the same namespace:
+# helm install o3as-app-helm o3as-app-helm --create-namespace --namespace o3as --values o3as-app-helm/values-test.yaml
+
+issuers:
+  letsencrypt: letsencrypt-site
+
+# info needed to obtain letsencrypt certificate
+# in test deployment we use "acme-staging" to avoid rate limits of letsencrypt
+letsencrypt:
+  acme:
+    server: https://acme-staging-v02.api.letsencrypt.org/directory
+    email: some.real@email.world
+
+sites:
+  hostApi: o3api.test.fedcloud.eu
+  hostWeb: o3web.test.fedcloud.eu
+  
+env:
+  o3asLogLevel: "DEBUG"
+  o3asDataPath: /data/Skimmed
+  o3asDataSourcesCsv: "https://git.scc.kit.edu/synergy.o3as/o3sources/-/raw/main/Data sources - Sources.csv"
+#  o3asPublishedListRemote: "https://git.scc.kit.edu/synergy.o3as/o3sources/-/raw/main/o3as_published_data.txt"
+  o3asPublishedListRemote: "https://git.scc.kit.edu/synergy.o3as/o3sources/-/raw/e35e8687240c75aeb566866418578f97835db401/o3as_published_data.txt"
+  hdf5UseFileLocking: "FALSE"
+
+commands:
+  getPublishedData: "https://git.scc.kit.edu/synergy.o3as/o3k8s/-/raw/helm-test/scripts/get-published-data.sh"
+  
+pv:
+  nfs:
+    name: nfs-o3as-data
+    path: /pv/o3as-data
+    server: kubeserver
+    
+security:
+  runAsUser: 1000
+  runsAsGroup: 1000
+
+images:
+  repositoryApi: o3as/o3api
+  tagApi: "0.8.4"
+  repositoryWeb: o3as/o3webapp
+  tagWeb: "1.0"
+  repositoryNsupdate: o3as/nsupdate
+  tagNsupdate: "1.0"
+  repositoryRclone: rclone/rclone
+  tagRclone: "1.58"
+  repositoryGetPub: alpine
+  tagGetPub: "3.14"

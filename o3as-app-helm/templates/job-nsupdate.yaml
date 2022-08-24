@@ -1,0 +1,24 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: o3as-job-nsupdate
+  namespace: {{ .Release.Namespace }}
+spec:
+  template:
+    spec:
+      containers:
+        - name: nsupdate
+          image: {{.Values.images.repositoryNsupdate}}:{{.Values.images.tagNsupdate}}
+          imagePullPolicy: Always
+          envFrom:
+            - configMapRef:
+                name: o3as-config
+            - secretRef:
+                name: o3as-secrets
+      restartPolicy: Never
+      nodeSelector:
+        kubernetes.io/hostname: kubeserver.localdomain
+      tolerations:
+      - key: "node-role.kubernetes.io/master"
+        operator: "Exists"
+        effect: "NoSchedule"
