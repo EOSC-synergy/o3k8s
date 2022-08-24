@@ -23,7 +23,7 @@ env:
   hdf5UseFileLocking: "TRUE"
 
 commands:
-  getPublishedData: "https://git.scc.kit.edu/synergy.o3as/o3k8s/-/raw/helm/scripts/get-published-data.sh"
+  getPublishedData: "https://git.scc.kit.edu/synergy.o3as/o3k8s/-/raw/main/scripts/get-published-data.sh"
   
 pv:
   nfs:
