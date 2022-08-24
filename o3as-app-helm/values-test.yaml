@@ -1,7 +1,5 @@
-namespace: o3as
-
-# for kubernetes 1.19.x one needs batch/v1beta1, for later vers batch/v1
-cronApiVersion: batch/v1beta1
+# while creating the app, specify the same namespace:
+# helm install o3as-app-helm o3as-app-helm --create-namespace --namespace o3as --values o3as-app-helm/values-test.yaml
 
 issuers:
   letsencrypt: letsencrypt-site
@@ -18,9 +16,11 @@ sites:
   hostWeb: o3web.test.fedcloud.eu
   
 env:
+  o3asLogLevel: "DEBUG"
   o3asDataPath: /data/Skimmed
   o3asDataSourcesCsv: "https://git.scc.kit.edu/synergy.o3as/o3sources/-/raw/main/Data sources - Sources.csv"
-  o3asPublishedListRemote: "https://git.scc.kit.edu/synergy.o3as/o3sources/-/raw/main/o3as_published_data.txt"
+#  o3asPublishedListRemote: "https://git.scc.kit.edu/synergy.o3as/o3sources/-/raw/main/o3as_published_data.txt"
+  o3asPublishedListRemote: "https://git.scc.kit.edu/synergy.o3as/o3sources/-/raw/e35e8687240c75aeb566866418578f97835db401/o3as_published_data.txt"
   hdf5UseFileLocking: "FALSE"
 
 commands:

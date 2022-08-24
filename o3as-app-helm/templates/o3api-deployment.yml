@@ -3,7 +3,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: o3api-deployment
-  namespace: {{.Values.namespace}}
+  namespace: {{ .Release.Namespace }}
 spec:
   replicas: 2
   strategy:
@@ -47,7 +47,7 @@ spec:
           httpGet:
             path: /api/v1/models
             port: 5005
-          periodSeconds: 10
+          periodSeconds: 20
           failureThreshold: 3
         resources:
           requests:

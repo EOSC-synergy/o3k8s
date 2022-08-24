@@ -2,7 +2,7 @@ apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
   name: o3as-ingress
-  namespace: {{.Values.namespace}}
+  namespace: {{ .Release.Namespace }}
   annotations:
     kubernetes.io/ingress.class: 'nginx'
     cert-manager.io/cluster-issuer: {{.Values.issuers.letsencrypt}}

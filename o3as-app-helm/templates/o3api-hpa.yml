@@ -3,7 +3,7 @@ apiVersion: autoscaling/v1
 kind: HorizontalPodAutoscaler
 metadata:
   name: o3api-hpa
-  namespace: {{.Values.namespace}}
+  namespace: {{ .Release.Namespace }}
 spec:
   maxReplicas: 4
   minReplicas: 1

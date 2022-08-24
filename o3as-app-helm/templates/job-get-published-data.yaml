@@ -2,7 +2,9 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: o3as-job-get-published-data
-  namespace: {{.Values.namespace}}
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    "helm.sh/hook": pre-install
 spec:
   template:
     spec:
@@ -12,6 +14,7 @@ spec:
       containers:
         - name: get-published-data
           image: {{.Values.images.repositoryGetPub}}:{{.Values.images.tagGetPub}}
+#          imagePullPolicy: IfNotPresent
           imagePullPolicy: Always
           envFrom:
             - configMapRef:

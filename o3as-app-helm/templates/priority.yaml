@@ -3,7 +3,7 @@ apiVersion: scheduling.k8s.io/v1
 kind: PriorityClass
 metadata:
   name: production-medium
-  namespace: {{.Values.namespace}}
+  namespace: {{ .Release.Namespace }}
 value: 9000
 globalDefault: false
 description: "This priority class should be used for o3as service pods only."

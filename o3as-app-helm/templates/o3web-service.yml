@@ -3,7 +3,7 @@ kind: Service
 apiVersion: v1
 metadata:
   name: o3web-service
-  namespace: {{.Values.namespace}}
+  namespace: {{ .Release.Namespace }}
 spec:
   selector:
     name: o3web-pod

@@ -1,8 +1,13 @@
-apiVersion: {{.Values.cronApiVersion}}
+# for kubernetes 1.19.x one needs batch/v1beta1, for later vers batch/v1
+{{- if .Capabilities.APIVersions.Has "batch/v1/CronJob" }}
+apiVersion: batch/v1
+{{- else if .Capabilities.APIVersions.Has "batch/v1beta1/CronJob" }}
+apiVersion: batch/v1beta1
+{{- end }}
 kind: CronJob
 metadata:
   name: o3as-cron-nsupdate
-  namespace: {{.Values.namespace}}
+  namespace: {{ .Release.Namespace }}
 spec:
   schedule: "5 1 * * *"
   jobTemplate:
