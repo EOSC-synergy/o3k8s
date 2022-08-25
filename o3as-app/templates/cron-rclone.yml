@@ -1,3 +1,5 @@
+{{/* include the body of this if statement when the variable .Values.runCronRclone exists and is set to "True" */}}
+{{- if and .Values.runCronRclone (eq .Values.runCronRclone "True") }}
 # for kubernetes 1.19.x one needs batch/v1beta1, for later vers batch/v1
 {{- if .Capabilities.APIVersions.Has "batch/v1/CronJob" }}
 apiVersion: batch/v1
@@ -19,7 +21,8 @@ spec:
             runAsGroup: {{.Values.security.runAsGroup}}
           containers:
             - name: rclone
-              image: {{.Values.images.repositoryRclone}}:{{.Values.images.tagRclone}}
+              image: {{.Values.rclone.image}}:{{.Values.rclone.imageTag}}
+              imagePullPolicy: {{.Values.rclone.imagePullPolicy}}
               args:
               - "--webdav-user"
               - $(RSTORAGE_USER)
@@ -32,7 +35,6 @@ spec:
               - "X-Requested-With,XMLHttpRequest"
               - ":webdav:"
               - /data
-              imagePullPolicy: Always
               envFrom:
                 - configMapRef:
                     name: o3as-config
@@ -47,3 +49,5 @@ spec:
               path: {{.Values.pv.nfs.path}}
               server: {{.Values.pv.nfs.server}}
           restartPolicy: Never
+
+{{- end }}

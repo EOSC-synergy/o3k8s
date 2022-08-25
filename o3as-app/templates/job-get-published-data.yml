@@ -13,9 +13,8 @@ spec:
         runAsGroup: {{.Values.security.runAsGroup}}
       containers:
         - name: get-published-data
-          image: {{.Values.images.repositoryGetPub}}:{{.Values.images.tagGetPub}}
-#          imagePullPolicy: IfNotPresent
-          imagePullPolicy: Always
+          image: {{.Values.getPublished.image}}:{{.Values.getPublished.imageTag}}
+          imagePullPolicy: {{.Values.getPublished.imagePullPolicy}}
           envFrom:
             - configMapRef:
                 name: o3as-config

@@ -36,14 +36,29 @@ security:
   runAsUser: 1000
   runsAsGroup: 1000
 
-images:
-  repositoryApi: o3as/o3api
-  tagApi: "0.8.4"
-  repositoryWeb: o3as/o3webapp
-  tagWeb: "1.0"
-  repositoryNsupdate: o3as/nsupdate
-  tagNsupdate: "1.0"
-  repositoryRclone: rclone/rclone
-  tagRclone: "1.58"
-  repositoryGetPub: alpine
-  tagGetPub: "3.14"
+o3api:
+  image: o3as/o3api
+  imageTag: "0.8.4"
+  imagePullPolicy: "Always"
+  deployReplicas: 2
+
+o3web:
+  image: o3as/o3webapp
+  imageTag: "1.0"
+  imagePullPolicy: "Always"
+  deployReplicas: 1
+
+nsupdate:
+  image: o3as/nsupdate
+  imageTag: "1.0"
+  imagePullPolicy: "Always"
+
+rclone:
+  image: rclone/rclone
+  imageTag: "1.58"
+  runCronRclone: "False"
+
+getPublished:
+  image: alpine
+  imageTag: "3.14"
+  imagePullPolicy: "Always"

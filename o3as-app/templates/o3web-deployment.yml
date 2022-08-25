@@ -5,7 +5,7 @@ metadata:
   name: o3web-deployment
   namespace: {{ .Release.Namespace }}
 spec:
-  replicas: 1
+  replicas: {{.Values.o3web.deployReplicas}}
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -35,8 +35,8 @@ spec:
       priorityClassName: production-medium
       containers:
       - name: o3web-app
-        image: {{.Values.images.repositoryWeb}}:{{.Values.images.tagWeb}}
-        imagePullPolicy: Always
+        image: {{.Values.o3web.image}}:{{.Values.o3web.imageTag}}
+        imagePullPolicy: {{.Values.o3web.imagePullPolicy}}
         resources:
           requests:
             memory: "1900Mi"

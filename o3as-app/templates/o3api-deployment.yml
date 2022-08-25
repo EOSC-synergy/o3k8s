@@ -5,7 +5,7 @@ metadata:
   name: o3api-deployment
   namespace: {{ .Release.Namespace }}
 spec:
-  replicas: 2
+  replicas: {{.Values.o3api.deployReplicas}}
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -35,8 +35,8 @@ spec:
       priorityClassName: production-medium
       containers:
       - name: o3api-app
-        image: {{.Values.images.repositoryApi}}:{{.Values.images.tagApi}}
-        imagePullPolicy: Always
+        image: {{.Values.o3api.image}}:{{.Values.o3api.imageTag}}
+        imagePullPolicy: {{.Values.o3api.imagePullPolicy}}
         readinessProbe:
           httpGet:
             path: /api/v1/models

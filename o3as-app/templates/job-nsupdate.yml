@@ -8,8 +8,8 @@ spec:
     spec:
       containers:
         - name: nsupdate
-          image: {{.Values.images.repositoryNsupdate}}:{{.Values.images.tagNsupdate}}
-          imagePullPolicy: Always
+          image: {{.Values.nsupdate.image}}:{{.Values.nsupdate.imageTag}}
+          imagePullPolicy: {{.Values.nsupdate.imagePullPolicy}}
           envFrom:
             - configMapRef:
                 name: o3as-config
