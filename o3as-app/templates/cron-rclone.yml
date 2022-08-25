@@ -1,5 +1,6 @@
-{{/* include the body of this if statement when the variable .Values.runCronRclone exists and is set to "True" */}}
-{{- if and .Values.runCronRclone (eq .Values.runCronRclone "True") }}
+{{/* include the body of this if the variable .Values.rclone.runCronRclone exists and is set to "True" */}}
+{{- if .Values.rclone.runCronRclone }}
+{{- if eq .Values.rclone.runCronRclone "True" }}
 # for kubernetes 1.19.x one needs batch/v1beta1, for later vers batch/v1
 {{- if .Capabilities.APIVersions.Has "batch/v1/CronJob" }}
 apiVersion: batch/v1
@@ -49,5 +50,5 @@ spec:
               path: {{.Values.pv.nfs.path}}
               server: {{.Values.pv.nfs.server}}
           restartPolicy: Never
-
+{{- end }}
 {{- end }}
