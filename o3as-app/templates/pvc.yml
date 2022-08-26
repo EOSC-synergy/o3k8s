@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{.Values.storage.pvcName}}
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    "helm.sh/hook": pre-install
+spec:
+  accessModes:
+    - {{.Values.storage.pvcAccessMode}
+  storageClassName: {{.Values.storage.pvcStorageClassName}}
+  resources:
+    requests:
+      storage: {{.Values.storage.pvcStorage}}
+  volumeName: {{.Values.storage.pvcName}}

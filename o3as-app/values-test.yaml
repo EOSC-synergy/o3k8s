@@ -26,11 +26,12 @@ env:
 commands:
   getPublishedData: "https://git.scc.kit.edu/synergy.o3as/o3k8s/-/raw/main/scripts/get-published-data.sh"
 
-pv:
-  nfs:
-    name: nfs-o3as-data
-    path: /pv/o3as-data
-    server: kubeserver
+storage:
+  volumeName: o3as-storage
+  pvcName: o3as-pvc
+  pvcStorageClassName: ""
+  pvcAccessMode: "ReadWriteMany"
+  pvcStorage: "5Gi"
 
 security:
   runAsUser: 1000
