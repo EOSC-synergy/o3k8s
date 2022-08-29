@@ -4,32 +4,36 @@
 
 Installs: [o3api](https://git.scc.kit.edu/synergy.o3as/o3api) and [o3webapp](https://git.scc.kit.edu/synergy.o3as/o3webapp)
 
-## K8s pre-requisites (k8s admin actions)
+## Pre-requisites 
+### k8s admin actions
 
-1. cert-manager has to be installed in the cluster, see [cert-manager](https://cert-manager.io/docs/), or
+1. cert-manager has to be installed in the cluster, see [cert-manager documentation](https://cert-manager.io/docs/), or
 ```sh
 kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.9.1/cert-manager.yaml
 ```
 
-2. PersistentVolume has to be created, e.g. named "pv-o3as".
+2. [PersistentVolume](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) (PV) has to be created, e.g. named "pv-o3as".
 
    There are two examples in the repository:
-   * hostPath (single node cluster): pv-o3as-hostpath.yml
-   * NFS case: pv-o3as-hostpath.yml
-   NB! NFS server has to be installed, configured and running!
+   * hostPath (single node cluster): `pv-o3as-hostpath.yml`
+   * NFS case: `pv-o3as-nfs.yml` <br>
+   **NB!** NFS server has to be installed, configured and running!
 
-3. Namespace "o3as" has to be created, `kubectl create ns o3as´
+3. Namespace "o3as" has to be created, `kubectl create ns o3as`
+
+### nsupdate configuration
+Deployed service benefits from the [Dynamic DNS service](https://nsupdate.fedcloud.eu/) (aka nsupdate) for EGI federated cloud. One has to configure domain name using nsupdate and obtain corresponding token.
 
 ## How to install the chart:
 
-!! DON'T FORGET to configure secrets !! See secrets.yml.tmpl
+!! **DON'T FORGET** to configure secrets (e.g. for nsupdate token) !! See `secrets.yml.tmpl`
 
-in the "test" environment:
+Install in the "test" environment:
 ```sh
 helm install o3as-app o3as-app --namespace o3as --values o3as-app/values-test.yaml
 ```
 
-in the "production" environment:
+Install in the "production" environment:
 ```sh
 helm install o3as-app o3as-app --namespace o3as --values o3as-app/values-prod.yaml
 ```
