@@ -9,6 +9,8 @@ metadata:
 data:
   O3API_SITE: {{.Values.sites.hostApi}}
   O3WEB_SITE: {{.Values.sites.hostWeb}}
+  O3AS_DATA_PATH: {{.Values.env.o3asDataPath}}
+  O3AS_DATA_BASEPATH: {{.Values.env.o3asDataPath}}
   O3AS_LOG_LEVEL: {{.Values.env.o3asLogLevel}}
   O3AS_LEGALINFO_URL: https://o3as.data.kit.edu/policies/terms-of-use.html
   O3AS_ACKNOWLEDGMENT_URL: https://o3as.data.kit.edu/policies/how-to-acknowledge.html

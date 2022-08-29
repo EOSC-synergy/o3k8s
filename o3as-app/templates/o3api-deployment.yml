@@ -63,8 +63,6 @@ spec:
         - configMapRef:
             name: o3as-config
         env:
-        - name: O3AS_DATA_BASEPATH
-          value: {{.Values.env.o3asDataPath}}
         - name: O3API_TIMEOUT
           value: "600"
         - name: O3API_WORKERS

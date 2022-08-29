@@ -25,7 +25,7 @@ spec:
                     name: o3as-secrets
           restartPolicy: Never
           nodeSelector:
-            kubernetes.io/hostname: kubeserver.localdomain
+            kubernetes.io/hostname: {{.Values.k8smaster}}
           tolerations:
           - key: "node-role.kubernetes.io/master"
             operator: "Exists"
