@@ -30,8 +30,9 @@ storage:
   volumeName: o3as-storage
   pvcName: o3as-pvc
   pvcStorageClassName: ""
-  pvcAccessMode: "ReadWriteMany"
-  pvcStorage: "5Gi"
+  pvcAccessMode: ReadWriteMany
+  pvcStorage: 3Gi
+  pvName: pv-o3as
 
 security:
   runAsUser: 1000

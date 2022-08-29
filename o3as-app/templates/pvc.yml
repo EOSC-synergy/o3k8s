@@ -5,11 +5,12 @@ metadata:
   namespace: {{ .Release.Namespace }}
   annotations:
     "helm.sh/hook": pre-install
+    "helm.sh/hook-weight": "-2"
 spec:
   accessModes:
-    - {{.Values.storage.pvcAccessMode}
+    - {{.Values.storage.pvcAccessMode}}
   storageClassName: {{.Values.storage.pvcStorageClassName}}
   resources:
     requests:
       storage: {{.Values.storage.pvcStorage}}
-  volumeName: {{.Values.storage.pvcName}}
+  volumeName: {{.Values.storage.pvName}}

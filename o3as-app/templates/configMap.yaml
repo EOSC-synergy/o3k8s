@@ -5,6 +5,7 @@ metadata:
   namespace: {{ .Release.Namespace }}
   annotations:
     "helm.sh/hook": pre-install
+    "helm.sh/hook-weight": "-3"
 data:
   O3API_SITE: {{.Values.sites.hostApi}}
   O3WEB_SITE: {{.Values.sites.hostWeb}}
