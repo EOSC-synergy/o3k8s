@@ -5,6 +5,10 @@
 #    (create, if necessary, e.g. by adding --create-namespace or ask your k8s admin):
 # helm install o3as-app o3as-app --namespace o3as --values o3as-app/values-test.yaml
 
+# name of the master node
+k8smaster: kubeserver.localdomain
+
+# name of the issuer, used in ingress
 issuers:
   letsencrypt: letsencrypt-site
 
@@ -19,8 +23,6 @@ sites:
   hostApi: o3api.test.fedcloud.eu
   hostWeb: o3web.test.fedcloud.eu
   
-k8smaster: kubeserver.localdomain
-  
 env:
   o3asLogLevel: "DEBUG"
   o3asDataPath: /data/Skimmed
@@ -32,7 +34,7 @@ env:
 storage:
   volumeName: o3as-storage
   pvcName: o3as-pvc
-  pvcStorageClassName: ""
+  pvcStorageClassName: '""'
   pvcAccessMode: ReadWriteMany
   pvcStorage: 3Gi
   pvName: pv-o3as
@@ -45,7 +47,7 @@ o3api:
   image: o3as/o3api
   imageTag: "0.8.4"
   imagePullPolicy: "Always"
-  deployReplicas: 2
+  deployReplicas: 1
 
 o3web:
   image: o3as/o3webapp
