@@ -4,5 +4,7 @@ credentials
 secrets
 
 # Files
-o3as-secrets.y?ml
-o3as-credentials.y?ml
+#o3as-secrets.y?ml
+#o3as-credentials.y?ml
+*secretes.y?ml
+*credentials.y?ml

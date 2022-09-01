@@ -1,4 +1,8 @@
+{{- if .Capabilities.APIVersions.Has "networking.k8s.io/v1beta1/Ingress" }}
 apiVersion: networking.k8s.io/v1beta1
+{{- else if .Capabilities.APIVersions.Has "networking.k8s.io/v1/Ingress" }}
+apiVersion: networking.k8s.io/v1
+{{- end }}
 kind: Ingress
 metadata:
   name: o3as-ingress
@@ -28,23 +32,51 @@ spec:
       - path: /api
         pathType: Prefix
         backend:
+{{- if .Capabilities.APIVersions.Has "networking.k8s.io/v1beta1/Ingress" }}
           serviceName: o3api-service
           servicePort: 5005
+{{- else if .Capabilities.APIVersions.Has "networking.k8s.io/v1/Ingress" }}
+          service:
+            name: o3api-service
+            port:
+              number: 5005
+{{- end }}
       - path: /
         pathType: Prefix
         backend:
+{{- if .Capabilities.APIVersions.Has "networking.k8s.io/v1beta1/Ingress" }}
           serviceName: o3web-service
           servicePort: 3000
+{{- else if .Capabilities.APIVersions.Has "networking.k8s.io/v1/Ingress" }}
+          service:
+            name: o3web-service
+            port:
+              number: 3000
+{{- end }}
   - host: {{.Values.sites.hostApi}}
     http:
       paths:
       - path: /api
         pathType: Prefix
         backend:
+{{- if .Capabilities.APIVersions.Has "networking.k8s.io/v1beta1/Ingress" }}
           serviceName: o3api-service
           servicePort: 5005
+{{- else if .Capabilities.APIVersions.Has "networking.k8s.io/v1/Ingress" }}
+          service:
+            name: o3api-service
+            port:
+              number: 5005
+{{- end }}
       - path: /
         pathType: Exact
         backend:
+{{- if .Capabilities.APIVersions.Has "networking.k8s.io/v1beta1/Ingress" }}
           serviceName: o3api-service
           servicePort: 5005
+{{- else if .Capabilities.APIVersions.Has "networking.k8s.io/v1/Ingress" }}
+          service:
+            name: o3api-service
+            port:
+              number: 5005
+{{- end }}
