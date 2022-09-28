@@ -27,8 +27,8 @@ env:
   o3asLogLevel: "DEBUG"
   o3asDataPath: /data/Skimmed
   o3asDataSourcesCsv: "https://git.scc.kit.edu/synergy.o3as/o3sources/-/raw/main/Data sources - Sources.csv"
-#  o3asPublishedListRemote: "https://git.scc.kit.edu/synergy.o3as/o3sources/-/raw/main/o3as_published_data.txt"
-  o3asPublishedListRemote: "https://git.scc.kit.edu/synergy.o3as/o3sources/-/raw/e35e8687240c75aeb566866418578f97835db401/o3as_published_data.txt"
+  o3asPublishedListRemote: "https://git.scc.kit.edu/synergy.o3as/o3sources/-/raw/test/o3as_published_data.txt"
+#  o3asPublishedListRemote: "https://git.scc.kit.edu/synergy.o3as/o3sources/-/raw/e35e8687240c75aeb566866418578f97835db401/o3as_published_data.txt"
   hdf5UseFileLocking: "FALSE" 
 
 storage:
