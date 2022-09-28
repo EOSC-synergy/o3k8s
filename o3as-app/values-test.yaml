@@ -1,6 +1,14 @@
-# while creating the app, specify the same namespace:
-# helm install o3as-app-helm o3as-app-helm --create-namespace --namespace o3as --values o3as-app-helm/values-test.yaml
+# 1. admin has to create PersistentVolume named e.g. "pv-o3as", see storage.pvName below
+#    example to create NFS PV is in the file pv-o3as-nfs.yml
+#    NB! NFS has to be installed and configured!
+# 2. while creating the app, specify the namespace 
+#    (create, if necessary, e.g. by adding --create-namespace or ask your k8s admin):
+# helm install o3as-app o3as-app --namespace o3as --values o3as-app/values-test.yaml
 
+# name of the master node
+k8smaster: kubeserver.localdomain
+
+# name of the issuer, used in ingress
 issuers:
   letsencrypt: letsencrypt-site
 
@@ -19,18 +27,17 @@ env:
   o3asLogLevel: "DEBUG"
   o3asDataPath: /data/Skimmed
   o3asDataSourcesCsv: "https://git.scc.kit.edu/synergy.o3as/o3sources/-/raw/main/Data sources - Sources.csv"
-#  o3asPublishedListRemote: "https://git.scc.kit.edu/synergy.o3as/o3sources/-/raw/main/o3as_published_data.txt"
-  o3asPublishedListRemote: "https://git.scc.kit.edu/synergy.o3as/o3sources/-/raw/e35e8687240c75aeb566866418578f97835db401/o3as_published_data.txt"
-  hdf5UseFileLocking: "FALSE"
+  o3asPublishedListRemote: "https://git.scc.kit.edu/synergy.o3as/o3sources/-/raw/test/o3as_published_data.txt"
+#  o3asPublishedListRemote: "https://git.scc.kit.edu/synergy.o3as/o3sources/-/raw/e35e8687240c75aeb566866418578f97835db401/o3as_published_data.txt"
+  hdf5UseFileLocking: "FALSE" 
 
-commands:
-  getPublishedData: "https://git.scc.kit.edu/synergy.o3as/o3k8s/-/raw/main/scripts/get-published-data.sh"
-
-pv:
-  nfs:
-    name: nfs-o3as-data
-    path: /pv/o3as-data
-    server: kubeserver
+storage:
+  volumeName: o3as-storage
+  pvcName: o3as-pvc
+  pvcStorageClassName: '""'
+  pvcAccessMode: ReadWriteMany
+  pvcStorage: 3Gi
+  pvName: pv-o3as
 
 security:
   runAsUser: 1000
@@ -40,7 +47,7 @@ o3api:
   image: o3as/o3api
   imageTag: "0.8.4"
   imagePullPolicy: "Always"
-  deployReplicas: 2
+  deployReplicas: 1
 
 o3web:
   image: o3as/o3webapp
@@ -62,3 +69,4 @@ getPublished:
   image: alpine
   imageTag: "3.14"
   imagePullPolicy: "Always"
+  command: "https://git.scc.kit.edu/synergy.o3as/o3k8s/-/raw/main/scripts/get-published-data.sh"

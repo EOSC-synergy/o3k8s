@@ -5,6 +5,7 @@ metadata:
   namespace: {{ .Release.Namespace }}
   annotations:
     "helm.sh/hook": pre-install
+    "helm.sh/hook-weight": "-1"
 spec:
   template:
     spec:
@@ -19,20 +20,17 @@ spec:
             - configMapRef:
                 name: o3as-config
           env:
-          - name: O3AS_DATA_PATH
-            value: {{.Values.env.o3asDataPath}}
           - name: O3AS_DATA_SOURCES_CSV
             value: {{.Values.env.o3asDataSourcesCsv}}
           - name: O3AS_PUBLISHED_LIST_REMOTE
             value: {{.Values.env.o3asPublishedListRemote}}
           command: ["/bin/sh"]
-          args: ["-c", "wget -O - {{.Values.commands.getPublishedData}} | sh"]
+          args: ["-c", "wget -O - {{.Values.getPublished.command}} | sh"]
           volumeMounts:
             - mountPath: /data
-              name: {{.Values.pv.nfs.name}}
+              name: {{.Values.storage.volumeName}}
       volumes:
-      - name: {{.Values.pv.nfs.name}}
-        nfs:
-          path: {{.Values.pv.nfs.path}}
-          server: {{.Values.pv.nfs.server}}
+      - name: {{.Values.storage.volumeName}}
+        persistentVolumeClaim:
+          claimName: {{.Values.storage.pvcName}}
       restartPolicy: Never

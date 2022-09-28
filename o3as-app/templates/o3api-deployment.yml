@@ -63,8 +63,6 @@ spec:
         - configMapRef:
             name: o3as-config
         env:
-        - name: O3AS_DATA_BASEPATH
-          value: {{.Values.env.o3asDataPath}}
         - name: O3API_TIMEOUT
           value: "600"
         - name: O3API_WORKERS
@@ -73,12 +71,11 @@ spec:
           value: '{{.Values.env.hdf5UseFileLocking}}'
         volumeMounts:
         - mountPath: /data
-          name: {{.Values.pv.nfs.name}}
+          name: {{.Values.storage.volumeName}}
       volumes:
-      - name: {{.Values.pv.nfs.name}}
-        nfs:
-          path: {{.Values.pv.nfs.path}}
-          server: {{.Values.pv.nfs.server}}
+      - name: {{.Values.storage.volumeName}}
+        persistentVolumeClaim:
+          claimName: {{.Values.storage.pvcName}}
 
 # + Apply o3api-service.yaml for Service
 # + Apply o3api-hpa.yaml for Horizonthal Pod Autoscaling
