@@ -2,11 +2,13 @@
 
 KUBECONFIG=$HOME/.kube/config
 
+# o3as helm chart settings
 repo="o3k8s"
 pv="pv-o3as"
 ns="o3as"
 secret="o3as-secrets"
 helm="o3as-app"
+pvc="o3as-pvc"
 
 # 1. Check that pv-o3as exists
 pv_status=$(kubectl get pv |grep ${pv}|cut -d' ' -f1)
@@ -41,12 +43,20 @@ helm_status=$(helm list -n $ns -q)
 if [ "${helm_status}" == "$helm" ]; then
    echo "[WARNING] Helm App \"$helm\" is already deployed. Trying to deprovision it now.."
    status=$(helm uninstall $helm -n $ns)
-   sleep 30
+   sleep 10
+   # we need to patch PVC, see e.g.
+   # https://veducate.co.uk/kubernetes-pvc-terminating/
+   # https://github.com/kubernetes/kubernetes/issues/69697
+   kubectl patch pvc $pvc -n $ns -p '{"metadata":{"finalizers":null}}'
    echo $status
+   # once PVC is deleted, PV has to be unbound
    echo "[WARNING] Resetting  PersistentVolume"
    pv_status=$(kubectl patch pv $pv -p '{"spec":{"claimRef": null}}')
    echo $pv_status
 fi
+
+echo "[INFO] Let's lint the HELM chart, $helm"
+helm lint $helm ${HOME}/${repo}/$helm --values ${HOME}/${repo}/$helm/values-test.yaml
 
 echo "[INFO] Trying to deploy Helm App \"$helm\".."
 helm install $helm ${HOME}/${repo}/$helm --namespace $ns --values ${HOME}/${repo}/$helm/values-test.yaml
