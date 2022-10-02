@@ -16,6 +16,8 @@ helm_values_test="values-test.yaml" # Values file for the Helm o3as chart
 # Defaults
 DEP_ENV_DEFAULT="test"              # default deployment environment
 helm_values=$helm_values_test       # Default Values file for the Helm o3as chart
+helm_set_values=""                  # By default no values to override
+timeout="60s"                       # Default timeout for deployment
 
 # Usage and command line parsing
 function usage()
@@ -26,13 +28,14 @@ function usage()
     -h|--help \t This help message
     -p|--prod \t Deploy $helm application in the production environment
     -s|--stage \t Deploy $helm application in the staging environment
-    -t|--test \t Deploy $helm application in the test environment" 1>&2; exit 0;
+    -t|--test \t Deploy $helm application in the test environment
+    -u|--undeploy \t UNdeploy $helm application" 1>&2; exit 0;
 }
 
 function check_arguments()
 {
-    OPTIONS=h,p,s,t
-    LONGOPTS=help,prod,stage,test
+    OPTIONS=h,p,s,t,u
+    LONGOPTS=help,prod,stage,test,undeploy
     # https://stackoverflow.com/questions/192249/how-do-i-parse-command-line-arguments-in-bash
     #set -o errexit -o pipefail -o noclobber -o nounset
     set  +o nounset
@@ -73,11 +76,21 @@ function check_arguments()
                 ;;
             -s|--stage)
                 DEP_ENV="stage"
-                helm_values=${helm_values_test}
+                helm_values=${helm_values_stage}
+                helm_set_values=("--set letsencrypt.acme.server=https://acme-staging-v02.api.letsencrypt.org/directory\
+                    --set sites.hostApi=o3api.test.fedcloud.eu\
+                    --set sites.hostWeb=o3web.test.fedcloud.eu\
+                    --set env.hdf5UseFileLocking=FALSE"
+                )
                 shift
                 ;;
             -t|--test)
                 DEP_ENV="test"
+                helm_values=${helm_values_test}
+                shift
+                ;;
+            -u|--undeploy)
+                DEP_ENV="undeploy"
                 helm_values=${helm_values_test}
                 shift
                 ;;
@@ -93,7 +106,44 @@ function check_arguments()
 }
 
 check_arguments "$0" "$@"
-echo "Deployment ENV: $DEP_ENV, values file: $helm_values"
+echo "Deployment ENV: $DEP_ENV"
+echo "Helm values file: $helm_values"
+echo "Helm --set values: $helm_set_values"
+
+# function to undeploy Helm chart
+undeploy()
+{
+   hlm=$1
+   helm_status=$(helm list -n $ns -q)
+   if [ "${helm_status}" == "$hlm" ]; then
+      echo "[WARNING] Helm chart \"$hlm\" is already deployed. Trying to undeploy it now.."
+      status=$(helm uninstall $hlm -n $ns)
+      sleep 5
+      echo $status
+      # (force) delete corresponding PVC
+      kubectl delete pvc $pvc -n $ns &
+      sleep 5
+   fi
+
+   # we need to patch PVC, if it is in "Terminatiing" phase. See e.g.
+   # https://veducate.co.uk/kubernetes-pvc-terminating/
+   # https://github.com/kubernetes/kubernetes/issues/69697
+   # if "Terminating" is found, try to reset
+   while [ -n "$(kubectl get pvc -n $ns |grep $pvc |grep -i Terminating)" ];
+   do
+      kubectl patch pvc $pvc -n $ns -p '{"metadata":{"finalizers":null}}'
+   done
+   # once PVC is deleted, PV has to be unbound
+   echo "[WARNING] Resetting  PersistentVolume, $pv"
+   pv_status=$(kubectl patch pv $pv -p '{"spec":{"claimRef": null}}')
+   echo $pv_status
+}
+
+if [ "$DEP_ENV" == "undeploy" ]; then
+   undeploy $helm
+   status=$?
+   exit $status
+fi
 
 # 0. We first lint the HELM chart
 echo "[INFO] Let's first lint the HELM chart, $helm"
@@ -102,7 +152,7 @@ $cmd
 if [ "$?" -gt 0 ]; then
   echo "[FAIL] Linting $helm Helm chart failed!"
   echo "       Command: ${cmd}"
-  exit 10
+  exit 1
 fi
 
 # 1. Check that pv-o3as exists
@@ -112,7 +162,7 @@ if [ "${pv_status}" == "${pv}" ]; then
    echo "[OK] PersistentVolume \"$pv\" is found"
 else
    echo "[FAIL] You have to create \"$pv\" PersistentVolume on kubernetes first!"
-   exit 11
+   exit 1
 fi
 
 # 2. Check that o3as namespace exists
@@ -122,7 +172,7 @@ if [ "${ns_status}" == "$ns" ]; then
    echo "[OK] Namespace \"$ns\" is found"
 else
    echo "[FAIL] You have to create \"$ns\" Namespace on kubernetes first!"
-   exit 12
+   exit 1
 fi
 
 # 3. Check if o3as secret exists in o3as namespace
@@ -131,35 +181,17 @@ if [ "${secret_status}" == "$secret" ]; then
    echo "[OK] Secret \"$secret\" is found in the namespace $ns"
 else
    echo "[FAIL] You have to create \"$secret\" Secret in the $ns Namespace on kubernetes first!"
-   exit 13
+   exit 1
 fi
 
-helm_status=$(helm list -n $ns -q)
-if [ "${helm_status}" == "$helm" ]; then
-   echo "[WARNING] Helm chart \"$helm\" is already deployed. Trying to undeploy it now.."
-   status=$(helm uninstall $helm -n $ns)
-   sleep 5
-   echo $status
-   # (force) delete corresponding PVC
-   kubectl delete pvc $pvc -n $ns &
-   sleep 5
-fi
-
-# we need to patch PVC, if it is in "Terminatiing" phase. See e.g.
-# https://veducate.co.uk/kubernetes-pvc-terminating/
-# https://github.com/kubernetes/kubernetes/issues/69697
-# if "Terminating" is found, try to reset
-while [ -n "$(kubectl get pvc -n $ns |grep $pvc |grep -i Terminating)" ];
-do
-   kubectl patch pvc $pvc -n $ns -p '{"metadata":{"finalizers":null}}'
-done
-# once PVC is deleted, PV has to be unbound
-echo "[WARNING] Resetting  PersistentVolume, $pv"
-pv_status=$(kubectl patch pv $pv -p '{"spec":{"claimRef": null}}')
-echo $pv_status
-
+# 4. Check if Helm chart already undeployed, if so => undeploy
+undeploy $helm
 
 echo "[INFO] Trying to deploy Helm chart \"$helm\".."
-helm install $helm ${HOME}/${repo}/$helm \
+# --wait may not be sufficient as it looks for 'maxUnavailable' which is 0 by default, see
+# e.g. https://github.com/helm/helm/issues/3173
+helm install --wait --timeout $timeout \
+     $helm ${HOME}/${repo}/$helm \
      --namespace $ns \
-     --values ${HOME}/${repo}/$helm/${helm_values}
+     --values ${HOME}/${repo}/$helm/${helm_values} \
+     $helm_set_values

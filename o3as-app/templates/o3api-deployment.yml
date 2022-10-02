@@ -68,7 +68,14 @@ spec:
         - name: O3API_WORKERS
           value: "1"
         - name: HDF5_USE_FILE_LOCKING
-          value: '{{.Values.env.hdf5UseFileLocking}}'
+# for the env setting need capital FALSE or TRUE,
+# but .Values.env.hdf5UseFileLocking is of boolean type,
+# => apply the trick below
+{{ if .Values.env.hdf5UseFileLocking }}
+          value: "TRUE"
+{{ else }}
+          value: "FALSE"
+{{ end }}
         volumeMounts:
         - mountPath: /data
           name: {{.Values.storage.volumeName}}
