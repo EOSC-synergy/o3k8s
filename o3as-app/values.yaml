@@ -3,7 +3,7 @@
 #    NB! NFS has to be installed and configured!
 # 2. while creating the app, specify the namespace 
 #    (create, if necessary, e.g. by adding --create-namespace or ask your k8s admin):
-# helm install o3as-app o3as-app --namespace o3as --values o3as-app/values-prod.yaml
+# helm install o3as-app o3as-app --namespace o3as
 
 # name of the master node
 k8smaster: kubeserver.localdomain

@@ -25,11 +25,11 @@ function usage()
     shopt -s xpg_echo
     echo "Usage: $0 <options> \n
     Options:
-    -h|--help \t This help message
-    -p|--prod \t Deploy $helm application in the production environment
-    -s|--stage \t Deploy $helm application in the staging environment
-    -t|--test \t Deploy $helm application in the test environment
-    -u|--undeploy \t UNdeploy $helm application" 1>&2; exit 0;
+    -h|--help \t\t This help message
+    -p|--prod \t\t Deploy Helm chart $helm in the production environment
+    -s|--stage \t\t Deploy Helm chart $helm in the staging environment
+    -t|--test \t\t Deploy Helm chart $helm in the test environment
+    -u|--undeploy \t Undeploy Helm chart $helm" 1>&2; exit 0;
 }
 
 function check_arguments()

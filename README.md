@@ -22,9 +22,10 @@ kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/
 3. Namespace "o3as" has to be created, `kubectl create ns o3as`
 
 ### nsupdate configuration
-Deployed service benefits from the [Dynamic DNS service](https://nsupdate.fedcloud.eu/) (aka nsupdate) for EGI federated cloud. One has to configure domain name using nsupdate and obtain corresponding token.
+Deployed service benefits from the [Dynamic DNS service](https://nsupdate.fedcloud.eu/) (aka nsupdate) for EGI federated cloud.
+One has to configure domain name using [nsupdate](https://nsupdate.fedcloud.eu/) and obtain corresponding token.
 
-## How to install the chart:
+## How to install the chart via Helm:
 
 !! **DON'T FORGET** to configure secrets (e.g. for nsupdate token) !! See `secrets.yml.tmpl`
 
@@ -42,4 +43,34 @@ to uninstall:
 ```sh
 helm uninstall o3as-app -n o3as
 ```
+
+## How to deploy/undeploy via "deploy" script
+In the repository there is `deploy.sh` (or `deploy`) which performs a number of checks before the actual deployment:
+
+1. helm lint to check the chart
+
+2. Check that "pv-o3as" PersistentVolume exists
+
+3. Check that "o3as" Namespace exists
+
+4. Check if o3as secret exists in o3as namespace
+
+5. Check if Helm chart already deployed, if so => undeploy
+
+6. Finally, deploy the chart
+
+There is also option to **undeploy** the chart. The current options include:
+
+```
+Usage: deploy <options>
+
+    Options:
+    -h|--help 		 This help message
+    -p|--prod 		 Deploy Helm chart o3as-app in the production environment
+    -s|--stage 		 Deploy Helm chart o3as-app in the staging environment
+    -t|--test 		 Deploy Helm chart o3as-app in the test environment
+    -u|--undeploy 	 Undeploy Helm chart o3as-app
+```
+
+The script is also intended to simplify CI/CD for the service.
 
