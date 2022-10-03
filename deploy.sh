@@ -80,6 +80,8 @@ function check_arguments()
                 helm_set_values=("--set letsencrypt.acme.server=https://acme-staging-v02.api.letsencrypt.org/directory\
                     --set sites.hostApi=o3api.test.fedcloud.eu\
                     --set sites.hostWeb=o3web.test.fedcloud.eu\
+                    --set o3api.imageTag=test\
+                    --set o3web.imageTag=test\
                     --set env.hdf5UseFileLocking=FALSE"
                 )
                 shift
