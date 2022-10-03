@@ -17,7 +17,7 @@ helm_values_test="values-test.yaml" # Values file for the Helm o3as chart
 DEP_ENV_DEFAULT="test"              # default deployment environment
 helm_values=$helm_values_test       # Default Values file for the Helm o3as chart
 helm_set_values=""                  # By default no values to override
-timeout="60s"                       # Default timeout for deployment
+timeout="90s"                       # Default timeout for deployment
 
 # Usage and command line parsing
 function usage()
