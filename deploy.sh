@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
-KUBECONFIG=$HOME/.kube/config
+USER=cloudadm
+HOME=$(eval echo ~$USER)
+#KUBECONFIG=$HOME/.kube/config
 
 # o3as helm chart settings
 repo="o3k8s"                        # git repository name
@@ -78,10 +80,10 @@ function check_arguments()
                 DEP_ENV="stage"
                 helm_values=${helm_values_stage}
                 helm_set_values=("--set letsencrypt.acme.server=https://acme-staging-v02.api.letsencrypt.org/directory\
-                    --set sites.hostApi=o3api.test.fedcloud.eu\
-                    --set sites.hostWeb=o3web.test.fedcloud.eu\
-                    --set o3api.imageTag=test\
-                    --set o3web.imageTag=test\
+                    --set sites.hostApi=api-stage.o3as.fedcloud.eu\
+                    --set sites.hostWeb=web-stage.o3as.fedcloud.eu\
+                    #--set o3api.imageTag=test\
+                    #--set o3web.imageTag=test"
                     --set env.hdf5UseFileLocking=FALSE"
                 )
                 shift
