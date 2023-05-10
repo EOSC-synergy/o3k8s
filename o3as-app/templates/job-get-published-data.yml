@@ -10,8 +10,9 @@ spec:
   template:
     spec:
       securityContext:
-        runAsUser: {{.Values.security.runAsUser}}
-        runAsGroup: {{.Values.security.runAsGroup}}
+        runAsUser: {{ int .Values.security.runAsUser }}
+        runAsGroup: {{ int .Values.security.runAsGroup }}
+        fsGroup: {{ int .Values.security.fsGroup }}
       containers:
         - name: get-published-data
           image: {{.Values.getPublished.image}}:{{.Values.getPublished.imageTag}}

@@ -17,7 +17,8 @@ kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/
    There are two examples in the repository:
    * hostPath (single node cluster): `pv-o3as-hostpath.yml`
    * NFS case: `pv-o3as-nfs.yml` <br>
-   **NB!** NFS server has to be installed, configured and running!
+   **NB!** NFS server has to be installed, configured and running! <br>
+   `kubectl apply -f pv-o3as-nfs.yml`
 
 3. Namespace "o3as" has to be created, `kubectl create ns o3as`
 
@@ -27,7 +28,7 @@ One has to configure domain name using [nsupdate](https://nsupdate.fedcloud.eu/)
 
 ## How to install the chart via Helm:
 
-!! **DON'T FORGET** to configure secrets (e.g. for nsupdate token) !! See `secrets.yml.tmpl`
+!! **DON'T FORGET** to configure secrets (e.g. for nsupdate token) !! See `secrets.yml.tmpl` for the example
 
 Install in the "test" environment:
 ```sh

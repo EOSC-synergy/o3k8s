@@ -44,22 +44,24 @@ storage:
   pvName: pv-o3as
 
 # UID and GID to run containers
+# IMPORTANT! to adjust to the local user UID
 security:
-  runAsUser: 1000
-  runsAsGroup: 1000
+  runAsUser: "1000"
+  runAsGroup: "1000"
+  fsGroup: "1000"
 
 # properties of individual containers
 o3api:
   image: o3as/o3api
   imageTag: "0.8.4"
   imagePullPolicy: "Always"
-  deployReplicas: 2
+  deployReplicas: "2"
 
 o3web:
   image: o3as/o3webapp
   imageTag: "1.0"
   imagePullPolicy: "Always"
-  deployReplicas: 1
+  deployReplicas: "1"
 
 nsupdate:
   image: o3as/nsupdate

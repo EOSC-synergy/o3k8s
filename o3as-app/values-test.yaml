@@ -41,20 +41,21 @@ storage:
   pvName: pv-o3as
 
 security:
-  runAsUser: 1000
-  runsAsGroup: 1000
+  runAsUser: "1000"
+  runAsGroup: "1000"
+  fsGroup: "1000"
 
 o3api:
   image: o3as/o3api
   imageTag: "test"
   imagePullPolicy: "Always"
-  deployReplicas: 1
+  deployReplicas: "1"
 
 o3web:
   image: o3as/o3webapp
   imageTag: "test"
   imagePullPolicy: "Always"
-  deployReplicas: 1
+  deployReplicas: "1"
 
 nsupdate:
   image: o3as/nsupdate

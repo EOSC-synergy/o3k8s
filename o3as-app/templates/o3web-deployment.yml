@@ -5,7 +5,7 @@ metadata:
   name: o3web-deployment
   namespace: {{ .Release.Namespace }}
 spec:
-  replicas: {{.Values.o3web.deployReplicas}}
+  replicas: {{ int .Values.o3web.deployReplicas }}
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -21,8 +21,8 @@ spec:
         name: o3web-pod
     spec:
       securityContext:
-        runAsUser: {{.Values.security.runAsUser}}
-        runAsGroup: {{.Values.security.runAsGroup}}
+        runAsUser: {{ int .Values.security.runAsUser }}
+        runAsGroup: {{ int .Values.security.runAsGroup }}
       affinity:
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
