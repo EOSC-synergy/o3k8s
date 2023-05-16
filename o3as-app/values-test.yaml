@@ -56,6 +56,7 @@ o3web:
   imageTag: "test"
   imagePullPolicy: "Always"
   deployReplicas: "1"
+  nextPublicApiHost: "https://o3api.test.fedcloud.eu/api/v1"
 
 nsupdate:
   image: o3as/nsupdate
