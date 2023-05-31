@@ -5,8 +5,11 @@
 #    (create, if necessary, e.g. by adding --create-namespace or ask your k8s admin):
 # helm install o3as-app o3as-app --namespace o3as --values o3as-app/values-test.yaml
 
-# name of the master node
+# hostname of the master node
 k8smaster: kubeserver.localdomain
+
+# master node role
+k8smasterNodeRole: "node-role.kubernetes.io/control-plane"
 
 # name of the issuer, used in ingress
 issuers:

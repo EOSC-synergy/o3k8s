@@ -27,6 +27,6 @@ spec:
           nodeSelector:
             kubernetes.io/hostname: {{.Values.k8smaster}}
           tolerations:
-          - key: "node-role.kubernetes.io/master"
+          - key: {{.Values.k8smasterNodeRole}}
             operator: "Exists"
             effect: "NoSchedule"
