@@ -29,9 +29,9 @@ sites:
 env:
   o3asLogLevel: "DEBUG"
   o3asDataPath: /data/Skimmed
-  o3asDataSourcesCsv: "https://git.scc.kit.edu/synergy.o3as/o3sources/-/raw/main/Data sources - Sources.csv"
-  o3asPublishedListRemote: "https://git.scc.kit.edu/synergy.o3as/o3sources/-/raw/test/o3as_published_data.txt"
-#  o3asPublishedListRemote: "https://git.scc.kit.edu/synergy.o3as/o3sources/-/raw/e35e8687240c75aeb566866418578f97835db401/o3as_published_data.txt"
+  o3asDataSourcesCsv: "https://codebase.helmholtz.cloud/m-team/o3as/o3sources/-/raw/main/Data sources - Sources.csv"
+  o3asPublishedListRemote: "https://codebase.helmholtz.cloud/m-team/o3as/o3sources/-/raw/test/o3as_published_data.txt"
+#  o3asPublishedListRemote: "https://codebase.helmholtz.cloud/m-team/o3as/o3sources/-/raw/e35e8687240c75aeb566866418578f97835db401/o3as_published_data.txt"
   # need boolean here
   hdf5UseFileLocking: false
 
@@ -75,4 +75,4 @@ getPublished:
   image: alpine
   imageTag: "3.14"
   imagePullPolicy: "Always"
-  command: "https://git.scc.kit.edu/synergy.o3as/o3k8s/-/raw/main/scripts/get-published-data.sh"
+  command: "https://codebase.helmholtz.cloud/m-team/o3as/o3k8s/-/raw/main/scripts/get-published-data.sh"

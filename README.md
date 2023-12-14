@@ -2,7 +2,7 @@
 
 [HELM](https://helm.sh/) chart for the O3as deployment in Kubernetes.
 
-Installs: [o3api](https://git.scc.kit.edu/synergy.o3as/o3api) and [o3webapp](https://git.scc.kit.edu/synergy.o3as/o3webapp)
+Installs: [o3api](https://codebase.helmholtz.cloud/m-team/o3as/o3api) and [o3webapp](https://codebase.helmholtz.cloud/m-team/o3as/o3webapp)
 
 ## Pre-requisites 
 ### k8s admin actions

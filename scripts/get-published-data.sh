@@ -8,7 +8,7 @@
 ### some defaults ###
 # default "Data sources - Sources.csv" file with Data Sources etc
 o3as_sources_csv_file="Data sources - Sources.csv"
-o3as_data_sources_csv="https://git.scc.kit.edu/synergy.o3as/o3sources/-/raw/main/${o3as_sources_csv_file}"
+o3as_data_sources_csv="https://codebase.helmholtz.cloud/m-team/o3as/o3sources/-/raw/main/${o3as_sources_csv_file}"
 # one can define O3AS_DATA_SOURCES_CSV via Environment Variable
 # if not defined => use default value provided above
 if [ ${#O3AS_DATA_SOURCES_CSV} -le 1 ]; then
@@ -16,7 +16,7 @@ if [ ${#O3AS_DATA_SOURCES_CSV} -le 1 ]; then
 fi
 
 # default (remote) address of the o3as_publised_list
-o3as_published_list_remote="https://git.scc.kit.edu/synergy.o3as/o3sources/-/raw/main/o3as_published_data.txt"
+o3as_published_list_remote="https://codebase.helmholtz.cloud/m-team/o3as/o3sources/-/raw/main/o3as_published_data.txt"
 # one can define O3AS_PUBLISHED_LIST_REMOTE via Environment Variable
 # if not defined => use default value provided above
 if [ ${#O3AS_PUBLISHED_LIST_REMOTE} -le 1 ]; then
